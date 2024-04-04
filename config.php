@@ -2,7 +2,7 @@
     session_start();
 
     define("SERVER","localhost");
-    define("USERNAME","admin");
+    define("USERNAME","root");
     define("PASSWORD","");
     define("DATABASE","projetua3db");
 ?>

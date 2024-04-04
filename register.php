@@ -1,3 +1,12 @@
+<?php
+require "functions.php";
+
+$response = "";
+if(isset($_POST["submit"])){
+    $response = registerUser($_POST["username"], $_POST["password"], $_POST["confirm_password"]);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +27,7 @@
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            position: relative;
         }
         h2 {
             text-align: center;
@@ -41,6 +51,12 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .success-banner{
+            color: green;
+        }
+        .error-banner{
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -49,14 +65,34 @@
         <h2>Register</h2>
 
         <form action="register.php" method="post">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="confirm_password" placeholder="confirm_password" required>
-            <input type="submit" value="Register">
+            <input type="text" name="username" placeholder="Username" value="<?php echo @$_POST["username"]; ?>">
+            <input type="password" name="password" placeholder="Password" value="<?php echo @$_POST["password"]; ?>">
+            <input type="password" name="confirm_password" placeholder="confirm_password" value="<?php echo @$_POST["confirm_password"]; ?>">
+            <input type="submit" name="submit" value="Register">
         </form>
 
         <a href="login.php">Page de connexion</a>
+        <?php
+            if($response == "Succes"){
+                ?>
+
+                <p class="success-banner ">
+                    Your registration was succesful
+                </p>
+                <?php
+            }
+            else{
+                ?>
+
+                <p class="error-banner">
+                    <?php echo @$response; ?>
+                </p>
+                <?php
+            }
+        ?>
     </div>
 
+    
+    
 </body>
 </html>

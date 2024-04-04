@@ -3,7 +3,7 @@
 require "config.php";
 
 function connect(){
-    $dbConnection = new mysqli("SERVER","USERNAME","PASSWORD","DATABASE");
+    $dbConnection = new mysqli(SERVER,USERNAME,PASSWORD,DATABASE);
     if($dbConnection->connect_errno != 0){
         $error = $dbConnection->connect_error;
         $error_date = date("F j, Y, g:i a");
@@ -44,4 +44,38 @@ function registerUser($username, $password, $confirm_password){
     if($data != null){
         return "Email existe deja";
     }
+
+    if(strlen($password) > 50){
+        return "Mots de passe trop long";
+    }
+    
+    if($password != $confirm_password){
+        return "Passwords are not the same";
+    }
+    
+
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    $stnt = $dbConnection->prepare("INSERT INTO client(username, password) VALUES (?,?)");
+    $stnt->bind_param("ss", $username, $hashed_password);
+    $stnt->execute();
+    if($stnt->affected_rows != 1){
+        return "Une erreur est survenue. Essaye encore";
+    }else{
+        return "Succes";
+    }
 }
+/*function loginUser($username, $password){
+    $dbConnection = connect();
+    $username = trim($username);
+    $password = trim($password);
+
+    if($username == "" || $password == ""){
+        return "Both field must be entered";
+    }
+
+    $username = filter_var($username, FILTER_SANITIZE_STRING);
+    $password = filter_var($password, FILTER_SANITIZE_STRING);
+
+
+}*/

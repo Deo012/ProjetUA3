@@ -1,3 +1,9 @@
+
+<?php
+    require "functions.php";
+    
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,11 +47,18 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .closeLogin{
+            color: red;
+        }
+        .closeLogin:hover{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
     <div class="login-box">
+        <div class="closeLogin"> X </div>
         <h2>Login</h2>
 
         <form action="" method="post">
