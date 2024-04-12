@@ -41,7 +41,9 @@
     <header>
         <div class="container">
             <h1>Welcome to Our Website</h1>
+            <a href="cataloge.php" class="login-button">Cataloge</a>
             <a href="login.php" class="login-button">Login</a>
+            
         </div>
     </header>
 

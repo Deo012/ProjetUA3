@@ -2,6 +2,7 @@
 require "functions.php";
 
 $response = "";
+echo "Form submitted";
 if(isset($_POST["submit"])){
     $response = registerUser($_POST["username"], $_POST["password"], $_POST["confirm_password"]);
 }
@@ -62,6 +63,7 @@ if(isset($_POST["submit"])){
 <body>
 
     <div class="register-box">
+        <a href="index.php">X</a>
         <h2>Register</h2>
 
         <form action="register.php" method="post">

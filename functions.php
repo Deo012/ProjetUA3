@@ -6,13 +6,17 @@ function connect(){
     $dbConnection = new mysqli(SERVER,USERNAME,PASSWORD,DATABASE);
     if($dbConnection->connect_errno != 0){
         $error = $dbConnection->connect_error;
+        $succesMsg = $dbConnection->thread_safe();
         $error_date = date("F j, Y, g:i a");
         $message = "{$error} | {$error_date} \r\n";
-        file_put_contents("db-log.txt", $message, FILE_APPEND);
+        file_put_contents('C:\xampp\htdocs\ProjetUA3\db-log.txt', $message, FILE_APPEND);
+        file_put_contents('C:\xampp\htdocs\ProjetUA3\db-log.txt', $succesMsg, FILE_APPEND);
+        var_dump("Connection failed");
 
         return false;
     }
     else{
+        var_dump("Connection reussi");
         return $dbConnection;
     }
 }
@@ -27,7 +31,7 @@ function registerUser($username, $password, $confirm_password){
 
     foreach($args as $value){
         if(empty($value) == true) {
-            return "All fields are required";
+            return "All fields are required!!";
         }
     }
     foreach($args as $value){
@@ -65,17 +69,12 @@ function registerUser($username, $password, $confirm_password){
         return "Succes";
     }
 }
-/*function loginUser($username, $password){
+function getProduit(){
     $dbConnection = connect();
-    $username = trim($username);
-    $password = trim($password);
-
-    if($username == "" || $password == ""){
-        return "Both field must be entered";
-    }
-
-    $username = filter_var($username, FILTER_SANITIZE_STRING);
-    $password = filter_var($password, FILTER_SANITIZE_STRING);
-
-
-}*/
+    $stmt = $dbConnection->prepare("SELECT * FROM produit");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    return $result;
+    
+}
