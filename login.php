@@ -1,49 +1,23 @@
 
 <?php
-    require "functions.php";
+    require 'functions.php';
 
     $reponse = "";
     echo "Form submitted\n";
-    //var_dump($_POST);
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    var_dump($_POST);
     
     
     if(isset($_POST['submit'])){
         
         $reponse = loginUser($_POST['username'], $_POST['password']);
-    }
+        echo $reponse;
 
-    function loginUser($username, $password){
-        //echo "Function loginUser Called";
-        //error_reporting(E_ALL);
-        //ini_set('display_errors', 1);
-        $dbConnection = connect();
-        var_dump($dbConnection);
-        $username = trim($username);
-        $password = trim($password);
-    
-        if($username == "" || $password == ""){
-            return "Both field must be entered";
-        }
-    
-        $username = filter_var($username, FILTER_SANITIZE_STRING);
-        $password = filter_var($password, FILTER_SANITIZE_STRING);
-    
-        $sql = "SELECT username, password FROM client WHERE username = ?";
-        $stmt = $dbConnection->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = $result->fetch_assoc();
-    
-        if($data == NULL){
-            return "Utilisateur n'existe pas dans la database";
-        }
-        
-        if(password_verify($password, $data["password"]) == FALSE){
-            return "Mauvais mots de passe";
-        }else{
-            $_SESSION["user"] = $username;
-            header("Location: index.php");
+        if(isset($_SESSION['redirect_url'])){
+            $redirect_url = $_SESSION['redirect_url'];
+            unset($_SESSION['redirect_url']);
+            header("Location: $redirect_url");
             exit();
         }
     }
@@ -112,7 +86,7 @@
         <form action="login.php" method="post">
             <input type="text" name="username" placeholder="Username" value="<?php echo @$_POST['username'] ?>">
             <input type="password" name="password" placeholder="Password" value="<?php echo @$_POST['password'] ?>">
-            <input type="submit" value="Login">
+            <input type="submit" name="submit" value="Login">
         </form>
 
         <a href="register.php">Cree un compte</a>

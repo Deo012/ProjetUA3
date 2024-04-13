@@ -108,7 +108,7 @@
                             <h4><b><?php echo $row["nomProduit"]?></b></h4>
                             <p><?php echo $row["description"]?></p>
                             <div class="buttom-card">
-                                <div class="modifierProduit">Modifier</div>
+                                <div class="modifierProduit"><a href="updateProduit.php?idProduit=<?php echo $row['idProduit'] ?>">Modifier</a></div>
                             </div>
                         </div>
                     </div>

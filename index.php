@@ -40,16 +40,16 @@
 <body>
     <header>
         <div class="container">
-            <h1>Welcome to Our Website</h1>
+            <h1>Bienvenue</h1>
             <a href="cataloge.php" class="login-button">Cataloge</a>
             <a href="login.php" class="login-button">Login</a>
+            <a href="logout.php" class="login-button">Logout</a>
             
         </div>
     </header>
 
     <div class="container">
-        <h2>Main Content Area</h2>
-        <p>This is the main content area of your website. You can put any content you want here.</p>
+        <h2>Achat de voiture</h2>
     </div>
 </body>
 </html>

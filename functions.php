@@ -58,16 +58,21 @@ function registerUser($username, $password, $confirm_password){
     }
     
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $encryption_key = "secret_key";
+    $encrypted_password = encrypt_password($password, $encryption_key);
 
     $stnt = $dbConnection->prepare("INSERT INTO client(username, password) VALUES (?,?)");
-    $stnt->bind_param("ss", $username, $hashed_password);
+    $stnt->bind_param("ss", $username, $encrypted_password);
     $stnt->execute();
     if($stnt->affected_rows != 1){
         return "Une erreur est survenue. Essaye encore";
     }else{
         return "Succes";
     }
+}
+
+function encrypt_password($password, $key) {
+    return base64_encode(openssl_encrypt($password, 'aes-256-cbc', $key, 0, substr($key, 0, 16)));
 }
 function getProduit(){
     echo"getProduit in use";
@@ -94,4 +99,42 @@ function addProduit($idProduit, $nomProduit, $urlImage, $description){
     }
     $stmt->close();
     $dbConnection->close();
+}
+
+function loginUser($username, $password){
+    $dbConnection = connect();
+
+    $username = trim($username);
+    $password = trim($password);
+
+    if($username == "" || $password == ""){
+        return "Both fields must be entered";
+    }
+
+    $username = filter_var($username, FILTER_SANITIZE_STRING);
+
+    $sql = "SELECT username, password FROM client WHERE username = ?";
+    $stmt = $dbConnection->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+
+    if($data == NULL){
+        return "Utilisateur n'existe pas dans la base de données";
+    }
+    
+    $decrypted_password = decrypt_password($data["password"], "secret_key");
+
+    if($password != $decrypted_password){
+        return "Mauvais mot de passe";
+    }else{
+        $_SESSION["user"] = $username;
+        header("Location: index.php");
+        exit();
+    }
+}
+
+function decrypt_password($encrypted_password, $key) {
+    return openssl_decrypt(base64_decode($encrypted_password), 'aes-256-cbc', $key, 0, substr($key, 0, 16));
 }

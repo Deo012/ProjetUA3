@@ -17,18 +17,13 @@ if(isset($_POST["submit"])){
     echo"SUBMIT FONCTIONNE";
     addProduit($_POST["idProduit"], $_POST["nomProduit"], $_POST["urlImage"], $_POST["description"]);
 }
-
-$car_id = "";
-if (isset($_GET['idProduit'])) {
-    $car_id = $_GET['idProduit'];
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product Form</title>
+    <title>Update Product Form</title>
     <style>
         form {
             max-width: 400px;
@@ -57,10 +52,10 @@ if (isset($_GET['idProduit'])) {
 </head>
 <body>
 
-    <h2>Add Product</h2>
+    <h2>Update Product</h2>
     <form action="ajouterProduit.php" method="post">
         <label for="idProduit">Id Produit:</label>
-        <input type="number" name="idProduit" value="<?php echo $car_id ?>">
+        <input type="number" name="idProduit" value="<?php echo @$_POST['idProduit'] ?>">
 
         <label for="nomProduit">Product Name:</label>
         <input type="text" name="nomProduit" value="<?php echo @$_POST['nomProduit'] ?>">
