@@ -1,6 +1,6 @@
 <?php
 
-require "config.php";
+require 'config.php';
 
 function connect(){
     $dbConnection = new mysqli(SERVER,USERNAME,PASSWORD,DATABASE);
@@ -70,6 +70,7 @@ function registerUser($username, $password, $confirm_password){
     }
 }
 function getProduit(){
+    echo"getProduit in use";
     $dbConnection = connect();
     $stmt = $dbConnection->prepare("SELECT * FROM produit");
     $stmt->execute();
@@ -77,4 +78,20 @@ function getProduit(){
     
     return $result;
     
+}
+
+function addProduit($idProduit, $nomProduit, $urlImage, $description){
+    echo"addProduit en utilisation";
+    $dbConnection = connect();
+    $stmt = $dbConnection->prepare("INSERT INTO produit(idProduit, nomProduit, urlImage, description) VALUES(?,?,?,?)");
+    if ($stmt === false) {
+        die('Error in SQL statement: ' . $dbConnection->error);
+    }
+    $stmt->bind_param("isss", $idProduit, $nomProduit, $urlImage, $description);
+    $stmt->execute();
+    if ($stmt->errno) {
+        die('Error executing SQL statement: ' . $stmt->error);
+    }
+    $stmt->close();
+    $dbConnection->close();
 }

@@ -1,7 +1,7 @@
 <?php
     include 'functions.php';
     $result = getProduit();
-
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,7 +118,7 @@
         ?>
 
         <div class="card">
-            <a href=""><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg" alt="plusImage" class="card-img"></a>
+            <a href="ajouterProduit.php"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Plus_symbol.svg" alt="plusImage" class="card-img"></a>
         </div>
     </div>
 </body>
